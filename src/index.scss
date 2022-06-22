@@ -1,0 +1,35 @@
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  outline: 0;
+  font-family: roboto, -apple-system, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.todo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 750px;
+  height: 530px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  box-shadow: 1px 2px 20px #f3f3f3;
+  border-radius: 10px;
+  border: 1px solid #F1F1F1;
+  font-size: 14px;
+
+  &__sidebar {
+    background-color: #F4F6F8;
+    width: 200px;
+    height: 100%;
+    border-right: 2px solid #F1F1F1;
+    padding: 60px 20px;
+  }
+
+
+}
+
+
