@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import List from "../List/List";
 import Badge from "../Badge/Badge";
 
@@ -7,7 +7,7 @@ import closeSVG from '../../assets/img/close.svg'
 import './AddList.scss'
 
 const AddList = ({ colors, onAdd }) => {
-    const [visiblePopup, setVisiblePopup] = useState(true)
+    const [visiblePopup, setVisiblePopup] = useState(false)
     const [selectedColor, selectColor] = useState(colors[0].id)
     const [inputValue, setInputValue] = useState('')
 
@@ -19,6 +19,10 @@ const AddList = ({ colors, onAdd }) => {
         const color = colors.filter(color => color.id === selectedColor)[0].name
         onAdd({"id": Math.random(), "name": inputValue, "color": color})
     }
+
+    useEffect(() => {
+        console.log(colors)
+    }, [])
 
     const onClose = () => {
         setVisiblePopup(false)
