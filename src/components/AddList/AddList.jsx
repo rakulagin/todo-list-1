@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios'
+
 import List from "../List/List";
 import Badge from "../Badge/Badge";
 
@@ -8,21 +10,33 @@ import './AddList.scss'
 
 const AddList = ({ colors, onAdd }) => {
     const [visiblePopup, setVisiblePopup] = useState(false)
-    const [selectedColor, selectColor] = useState(colors[0].id)
+    const [selectedColor, selectColor] = useState(1)
     const [inputValue, setInputValue] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        if(Array.isArray(colors)) {
+            selectColor(colors[0].id)
+        }
+    }, [colors])
 
     const addNewList = () => {
         if (!inputValue) {
             alert('ВВедите название списка')
             return
         }
-        const color = colors.filter(color => color.id === selectedColor)[0].name
-        onAdd({"id": Math.random(), "name": inputValue, "color": color})
+        setIsLoading(true)
+        axios.post('http://localhost:3001/lists', {name: inputValue, colorId: selectedColor})
+            .then(({ data }) => {
+                const color = colors.filter(color => color.id === selectedColor)[0].name
+                const listObj = {...data, color: { name: color} }
+                onAdd(listObj)
+                onClose()
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
     }
-
-    useEffect(() => {
-        console.log(colors)
-    }, [])
 
     const onClose = () => {
         setVisiblePopup(false)
@@ -75,10 +89,11 @@ const AddList = ({ colors, onAdd }) => {
                     <button
                         onClick={() => {
                             addNewList()
-                            onClose()
                         }}
                         className="button"
-                    >Добавить</button>
+                    >
+                        {isLoading ? 'Добавление...' : 'Добавить'}
+                    </button>
                 </div>
                 )}
         </div>

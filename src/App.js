@@ -3,26 +3,21 @@ import axios from 'axios'
 
 import { List, AddList, Tasks} from './components'
 
-// fetch('http://localhost:3001/lists?_expand=color').then(res => res.json()).then(json => {
-//     console.log(json)
-// })
-
 function App() {
-
-
-
-    const [lists, setLists] = useState(
-        DB.lists.map(item => {
-            item.color = DB.colors.filter(color => color.id === item.colorId)[0].name
-            return item
-        })
-    );
+    const [lists, setLists] = useState(null)
+    const [colors, setColors] = useState(null)
 
     useEffect(() => {
-        axios.get('http://localhost:3001/lists?_expand=color').then(({ data }) => {
-            console.log(data)
-        })
-    }, [lists])
+        axios.get('http://localhost:3001/lists?_expand=color&_embed=tasks')
+            .then(({ data }) => {
+                setLists(data);
+            });
+        axios.get('http://localhost:3001/colors')
+            .then(({ data }) => {
+            setColors(data);
+        });
+    }, []);
+
 
     const onAddList = (obj) => {
         const newList = [...lists, obj]
@@ -47,20 +42,27 @@ function App() {
             ]}/>
 
             {/*список листов*/}
-            <List items={lists}
-                  onRemove={(item) => {console.log(item)}}
-                  isRemovable
-            />
+            {lists? (
+                <List items={lists}
+                      onRemove={(id) => {
+                          const newLists = lists.filter(item => item.id !== id)
+                          setLists(newLists)
+                      }}
+                      isRemovable
+                />
+            ) : (
+                'загузка...'
+            )}
 
             {/*добавить*/}
             <AddList
                 onAdd={onAddList}
-                colors={DB.colors}
+                colors={colors}
             />
         </div>
 
         <div className="todo__tasks">
-            <Tasks />
+            {lists && <Tasks list={lists[1]} />}
         </div>
     </div>
   );
