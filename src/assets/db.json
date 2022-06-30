@@ -2,7 +2,7 @@
   "lists": [
     {
       "id": 1,
-      "name": "Продажи",
+      "name": "Покупки",
       "colorId": 5
     },
     {
@@ -126,6 +126,24 @@
       "text": "tttt",
       "completed": false,
       "id": 18
+    },
+    {
+      "listId": 1,
+      "text": "1",
+      "completed": false,
+      "id": 19
+    },
+    {
+      "listId": 2,
+      "text": "jbn n",
+      "completed": false,
+      "id": 20
+    },
+    {
+      "listId": 2,
+      "text": "kjgghdjfi",
+      "completed": false,
+      "id": 21
     }
   ],
   "colors": [
